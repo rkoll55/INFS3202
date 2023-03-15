@@ -31,7 +31,9 @@ $routes->get('/hello', 'Hello::index');
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-
+$routes->get('/hello', 'Hello::index');
+$routes->get('/login', 'Login::index');
+$routes->post('/login/check_login', 'Login::check_login');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
