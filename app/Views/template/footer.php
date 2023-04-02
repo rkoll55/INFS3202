@@ -1,4 +1,7 @@
-<footer>
+<head>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css">
+</head>
+<footer class = "footer">
     <div class="container">
         <div class="row vcenter">
             <div class="col-xs-6">

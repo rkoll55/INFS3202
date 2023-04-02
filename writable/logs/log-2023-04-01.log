@@ -1,0 +1,24 @@
+CRITICAL - 2023-04-01 13:01:55 --> Call to undefined function App\Controllers\display_questions()
+in APPPATH/Controllers/Main.php on line 8.
+ 1 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Main->index()
+ 2 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-01 13:02:14 --> Undefined constant "App\Controllers\this"
+in APPPATH/Controllers/Main.php on line 8.
+ 1 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Main->index()
+ 2 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-01 13:02:15 --> Undefined constant "App\Controllers\this"
+in APPPATH/Controllers/Main.php on line 8.
+ 1 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Main->index()
+ 2 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-01 13:02:17 --> Undefined constant "App\Controllers\this"
+in APPPATH/Controllers/Main.php on line 8.
+ 1 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Main->index()
+ 2 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+ 3 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+ 4 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
