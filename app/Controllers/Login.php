@@ -16,6 +16,7 @@ class Login extends BaseController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
+
         $if_remember = $this->request->getPost('remember');
 
         $model = new \App\Models\User_model();
@@ -32,7 +33,7 @@ class Login extends BaseController
                 setcookie('password', $password, time() + 3600, "/");
             }
 
-            return redirect()->to(base_url('main'));
+            return redirect()->to(base_url());
 
 
         }else {

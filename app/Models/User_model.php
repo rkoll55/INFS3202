@@ -18,4 +18,15 @@ class User_model extends Model
         }
         return false;
     }
+
+    public function signUp($data)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('users');
+        if ($builder->insert($data)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

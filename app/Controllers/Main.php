@@ -2,11 +2,22 @@
 namespace App\Controllers;
 class Main extends BaseController
 {
-	public function index()
- {
- echo view('template/header');
- echo view('/board_page', ['questions' => $this->display_questions()]);
- //echo view('template/footer');
+	public function index($subject = null)
+ 	{
+
+	$session = session();
+	if (!$session->has('username')){
+		return redirect()->to(base_url());
+	}
+	if ($subject == null){
+		return redirect()->to(base_url());
+	}
+	
+	$data['questions'] = $this->display_questions();
+	$data['subject'] = $subject;
+	echo view('template/header');
+	echo view('/board_page', $data);
+	echo view('template/footer');
  }
 
  	public function display_questions(){
