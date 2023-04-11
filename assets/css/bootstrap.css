@@ -6293,6 +6293,35 @@ a.close.disabled {
   border-radius: 0.25rem;
 }
 
+
+.answer-container{
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+
+}
+
+.answer_section {
+  width: 100%;
+  border-radius: 10px; 
+  bottom: 0;
+  right: 20px;
+  padding: 20px;
+}
+
+.popup {
+  width: 30%;
+  border-radius: 10px; 
+  position: fixed;
+  background-color: #ffffff;
+  bottom: 0;
+  right: 20px;
+  display: none;
+  text-align: right;
+  z-index: 9999;
+  padding: 20px;
+}
+
 .popover {
   position: absolute;
   top: 0;
@@ -10215,9 +10244,9 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  left: 10;
+  left: 10px;
 }
 
 .text-break {

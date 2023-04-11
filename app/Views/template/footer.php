@@ -5,7 +5,8 @@
     <div class="container">
         <div class="row vcenter">
             <div class="col-xs-6">
-                <p>&copy; 2021-<?php echo date("Y"); ?></p>
+                <p style="margin-bottom: 0px;">&copy; 2021-<?php echo date("Y"); ?></p>
+                <p style="margin-top: 0;">Template Credit: datta-able-bootstrap-dashboard</p>
             </div>
         </div>
     </div>

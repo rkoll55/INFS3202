@@ -12,11 +12,11 @@ class Home extends BaseController
 
         $model = new \App\Models\subject_model();
         $subjects = $model->getAllSubjects();
+        $questions = $model->getUserQuestions(session()->get('username'));
 
-        foreach ($subjects as $row){
-         //   echo $row->name;
-        }
         $data['subjects'] = $subjects;
+        $data['questions'] = $questions;
+
 
         $data['error']= "";
         echo view('template/header');

@@ -6,6 +6,23 @@ class Login extends BaseController
 {
     public function index() {
         $data['error']= "";
+        $session = session();
+        if ((isset($_COOKIE['username']) && isset($_COOKIE['password'])) || $session->has('username')){
+            $model = new \App\Models\User_model();
+            if ($model->login(get_cookie('username'),get_cookie('password'))){
+                $session = session();
+                $session->set('username',get_cookie('username'));
+                $session->set('password',get_cookie('password'));
+                if ($session->has('subject')){
+                    return redirect()->to(base_url('main/'.$session->get('subject')));
+                } else {
+                    return redirect()->to(base_url());
+                }
+            } else if ($session->has('username')){
+                return redirect()->to(base_url());
+            }
+        }
+
         echo view('template/header');
         echo view('login', $data);
         echo view('template/footer');
@@ -23,14 +40,15 @@ class Login extends BaseController
         $check = $model->login($username,$password);
 
         if ($check) {
+            session_set_cookie_params(0);
 			$session = session();
             $session->set('username',$username);
             $session->set('password',$password);
 
             if ($if_remember)
             {
-                setcookie('username', $username, time() + 3600, "/");
-                setcookie('password', $password, time() + 3600, "/");
+                setcookie('username', $username, time() + 7200, "/");
+                setcookie('password', $password, time() + 7200, "/");
             }
 
             return redirect()->to(base_url());
@@ -49,9 +67,9 @@ class Login extends BaseController
             $session = session();
             $session->destroy();
 
-            delete_cookie('username');
-            delete_cookie('password');
-
+            setcookie('username', '', time() - 3600, '/');
+            setcookie('password', '', time() - 3600, '/');
+            setcookie('subject', '', time() - 3600, '/');
 
             return redirect()->to(base_url('login'));
         }

@@ -31,13 +31,18 @@ $routes->get('/hello', 'Hello::index');
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/main/answer_question/ajax', 'Main::answer_question');
+$routes->match(['get','post'],'/main/(answer_question/ajax)', 'Main::answer_question');
+$routes->get('/(.*)/ajax', 'Main::submit_form');
+$routes->match(['get','post'],'/(.*/ajax)', 'Main::submit_form');
 $routes->get('/main/(:num)', 'Main::index/$1');
 $routes->get('/main', 'Main::index');
+$routes->get('/login/logout','Login::logout');
 $routes->get('/login', 'Login::index');
 $routes->get('/signup', 'Signup::index');
 $routes->post('/login/check_login', 'Login::check_login');
 $routes->post('/signup/check_signUp', 'Signup::check_signUp');
-$routes->get('/login/logout','Login::logout');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

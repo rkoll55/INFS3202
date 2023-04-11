@@ -6,6 +6,21 @@ class Signup extends BaseController
 {
     public function index() {
         $data['error']= "";
+
+        if (isset($_COOKIE['username']) && isset($_COOKIE['password'])){
+            $model = new \App\Models\User_model();
+            if ($model->login(get_cookie('username'),get_cookie('password'))){
+                $session = session();
+                $session->set('username',get_cookie('username'));
+                $session->set('password',get_cookie('password'));
+                if (isset($_COOKIE['subject'])){
+                    return redirect()->to(base_url('main/'.get_cookie('subject')));
+                }else {
+                    return redirect()->to(base_url());
+                }
+            }
+        }
+
         echo view('template/header');
         echo view('signup', $data);
         echo view('template/footer');
@@ -27,7 +42,7 @@ class Signup extends BaseController
         
         $rules = [
             'username' => [
-                'rules' => 'min_length[7]|max_length[15]|alpha_numeric',
+                'rules' => 'min_length[7]|max_length[15]|alpha_numeric|is_unique[users.username]',
                 'errors' => ['min_length' => 'The username field must be at least 7 characters long.',
                 'max_length' => 'The username field must not exceed 15 characters.',
                 'alpha_numeric' => 'The username field must contain only letters and numbers.'] 
@@ -56,16 +71,16 @@ class Signup extends BaseController
             'staff' => []
         ];
         
-        //$validation->setRules($rules);
-
-        //if ($validation->run()){
+        
         if ($this->validate($rules)){
+
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT); 
 
             $id = rand(10, 99999);
             $info = array(
                 'id' => $id,
                 'username' => $username,
-                'password' => $password,
+                'password' => $hashedPassword,
                 'FirstName' => $first_name,
                 'LastName' => $last_name,
                 'isStaff' =>  $is_staff,

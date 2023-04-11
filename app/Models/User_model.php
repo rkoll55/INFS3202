@@ -11,10 +11,15 @@ class User_model extends Model
         $db = \Config\Database::connect();
         $builder = $db->table('users');
         $builder->where('username', $username);
-        $builder->where('password', $password);
         $query = $builder->get();
-        if ($query->getRowArray()) {
-            return true;
+        $user = $query->getRow();
+        if ($user) {
+            echo $password;
+            echo '</br>';
+            echo $user->password;
+            if (password_verify($password, $user->password)) {
+                return true;
+            }
         }
         return false;
     }
@@ -28,5 +33,17 @@ class User_model extends Model
         } else {
             return false;
         }
+    }
+
+    public function getUserId($username)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT id
+            FROM users
+            WHERE username = '".$username."'");
+
+        $user = $query->getRow();
+        return $user->id;
+
     }
 }
