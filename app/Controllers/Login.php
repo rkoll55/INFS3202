@@ -13,13 +13,18 @@ class Login extends BaseController
                 $session = session();
                 $session->set('username',get_cookie('username'));
                 $session->set('password',get_cookie('password'));
+                $session->set('staff',get_cookie('staff'));
                 if ($session->has('subject')){
                     return redirect()->to(base_url('main/'.$session->get('subject')));
                 } else {
                     return redirect()->to(base_url());
                 }
             } else if ($session->has('username')){
-                return redirect()->to(base_url());
+                if ($session->has('subject')){
+                    return redirect()->to(base_url('main/'.$session->get('subject')));
+                } else {
+                    return redirect()->to(base_url());
+                }
             }
         }
 
@@ -44,11 +49,15 @@ class Login extends BaseController
 			$session = session();
             $session->set('username',$username);
             $session->set('password',$password);
+            $staff = $model->checkStaff($username);
+            $session->set('staff',$staff);
+
 
             if ($if_remember)
             {
-                setcookie('username', $username, time() + 7200, "/");
-                setcookie('password', $password, time() + 7200, "/");
+                setcookie('username', $username, time() + 9200, "/");
+                setcookie('password', $password, time() + 9200, "/");
+                setcookie('staff', $staff, time() + 9200, "/");
             }
 
             return redirect()->to(base_url());

@@ -46,4 +46,19 @@ class User_model extends Model
         return $user->id;
 
     }
+
+    public function checkStaff($username)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT isStaff
+            FROM users
+            WHERE username = '".$username."'");
+
+        $user = $query->getRow();
+        if (is_null($user->isStaff)){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }

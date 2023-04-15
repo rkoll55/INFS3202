@@ -53,6 +53,20 @@
                                                             </br>
                                                         <div style="margin-left: 40px; margin-right: 40px;">
                                                             <?php echo($pill->description); ?>
+                                                            
+                                                            <?php 
+                                                            $main = new \App\Controllers\Main();
+                                                            $files = $main->get_files($pill->id);
+                                                            echo "</br>";
+                                                            echo "</br>";
+                                                            
+                                                            foreach($files as $file){ 
+                                                                $filename = $file->name;
+                                                                 echo anchor(base_url('writable/uploads/'.$filename)); 
+                                                                 echo "</br>";
+                                                            }
+                                                            ?>
+
                                                         </div>
                                                         </br>
                                                     </div>
@@ -67,10 +81,25 @@
                                                     <div class = "answer-container" style = "margin-top: 10px">
                                                         <div style = "margin-top: 15px; padding-bottom: 15px; margin-right: 15px; margin-left: 15px" >
                                                             <?php echo $answer->description; ?>
-                                                            </br>
-                                                        </div>
+                                                            </br>                                                        </div>
                                                     </div>
-                                                <?php
+                                                    <?php if(isset($staff)) { 
+                                                        if ($staff == 1){
+                                                            echo form_open(base_url().'main/endorse');
+                                                            if ($answer->likes > 0){
+                                                         ?>
+                                                        <button type="submit" id="endorseButton_<?php echo $answer->id; ?>" class="btn btn-success text-center" style="width: 150px;">Un-Endorse</button>
+                                                        <?php } else {
+                                                            ?><button type="submit" id="endorseButton_<?php echo $answer->id; ?>" class="btn btn-secondary text-center" style="width: 150px;">Endorse</button>
+
+                                                        <?php }  ?>
+                                                        <input type="hidden" name="answerId" value="<?php echo $answer->id; ?>" />
+                                                        <input type="hidden" name="answerLikes" value="<?php echo $answer->likes; ?>" />
+
+                                                    <?php
+                                                            echo form_close();
+                                                    }
+                                                  }
                                                 }
                                                 ?>
 
@@ -92,7 +121,7 @@
                                 }
                                 ?>
                             </div>
-                            <div id="postPopup" class="popup">
+                            <div id="postPopup" class="popup" style="border: 1px solid black;">
                                 <div class="row">
                                     <div class = "col-10 text-left">
                                         </br>
@@ -102,15 +131,24 @@
                                     <a type="button" id="closePopButton" class="btn btn-light btn-block text-right">x</a>
                                     </div>
                                 </div>
-                                <form id="submitPost">
+                                <?php echo form_open_multipart('', array('id' =>'submitPost')); ?>
                                     <div class="form-group">
 						                <input type="text" class="form-control" placeholder="Title (max 30 characters)" required="required" maxlength="30" name="title">
 					                </div>
                                     <div class="form-group">
 						                <textarea class="form-control" style = "height: 150px;" placeholder="Describe the problem here" required="required" name="description"></textarea>
 					                </div>
+                                    <div class="form-group" style="display: flex; align-items: center;">
+                                        <input type="file" name="userfiles[]" multiple>
+                                    </div>
+                                    <div class="form-group" style="text-align: left">
+                                        <p> Files must not exceed 1Mb in size</p>
+                                    </div>
+                                    <div class="form-group" style="text-align: left">
+                                        <p> Drag and Drop!</p>
+                                    </div>
                                     <button type="submit" id="submitButton" class="btn btn-success btn-block text-center">Submit</button>
-                                </form>
+                                <?php echo form_close(); ?>
                                 
                             </div>
 
@@ -125,6 +163,17 @@
         var postPopup = document.getElementById('postPopup');
         var closePopup = document.getElementById('closePopButton');
         var submitPopup = document.getElementById('submitButton');
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const activeTabId = localStorage.getItem('activeTab');
+    if (activeTabId) {
+        const activeTab = document.querySelector(`[id^="v-pills-${activeTabId}"]`);
+        if (activeTab) {
+            activeTab.click();
+        }
+    }
+});
+
 
         postButton.addEventListener('click', function(){
             postPopup.style.display = 'block';
@@ -150,10 +199,15 @@
             
         });
 
+
         <?php
             if(isset($questions)){
                 foreach ($questions as $pill){
         ?>
+            document.getElementById('v-pills-<?php echo $pill->id; ?>').addEventListener('click', function(event){
+                localStorage.setItem('activeTab', <?php echo $pill->id; ?>);
+            });
+
             document.getElementById('answerButton_<?php echo $pill->id ?>').addEventListener('click', function(event){
 
                 event.preventDefault();

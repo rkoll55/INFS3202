@@ -26,11 +26,29 @@ class subject_model extends Model
         $db = \Config\Database::connect();
         $builder = $db->table('questions');
         if ($builder->insert($data)){
-            return true;
+            return  $db->insertID();
         } else {
             return false;
         }
     }
+
+    public function addFile($name, $id)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('files');
+
+        $data = array(
+            'name' => $name,
+            'question_id' => $id
+        );
+
+        if ($builder->insert($data)){
+            return  true;
+        } else {
+            return false;
+        }
+    }
+
 
     public function addAnswer($data)
     {
@@ -63,6 +81,30 @@ class subject_model extends Model
         WHERE question_id = '.$questionId.' ORDER BY likes DESC');
         $answers = $query->getResult();
         return $answers;
+    }
+
+    public function getFiles($questionId)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query('SELECT name FROM files 
+        WHERE question_id = '.$questionId);
+        $answers = $query->getResult();
+        return $answers;
+    }
+
+    public function endorseAnswer($AnswerId)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query('UPDATE answers 
+        SET likes = likes + 1 WHERE id = '.$AnswerId);
+      
+    }
+    public function unEndorseAnswer($AnswerId)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query('UPDATE answers 
+        SET likes = 0 WHERE id = '.$AnswerId);
+      
     }
 
 }

@@ -19,6 +19,8 @@ class Main extends BaseController
 	
 	$data['questions'] = $this->display_questions($subject);
 	$data['subject'] = $subject;
+	$data['staff'] = $session->get('staff'); 
+
 	echo view('template/header');
 	echo view('/board_page', $data);
 	echo view('template/footer');
@@ -38,7 +40,8 @@ class Main extends BaseController
 			$title = $this->request->getVar('title');
 			$description = $this->request->getVar('description');
 			$subject = $this->request->getVar('subject');
-			
+
+
 			$session = session();	
 			$username = $session->get('username');
 			
@@ -58,7 +61,20 @@ class Main extends BaseController
             );
 			
 			$model = new \App\Models\subject_model();
-            echo $model->addQuestion($info);
+            $questionId =  $model->addQuestion($info);
+			echo $questionId;
+
+			if ($files = $this->request->getFiles()) {
+				foreach ($files['userfiles'] as $file) {
+					if ($file->isValid() && ! $file->hasMoved()) {
+						
+						$newName = $file->getRandomName();
+						$file->move(WRITEPATH . 'uploads', $newName);
+						echo $model->addFile($newName, $questionId);
+					}
+				}
+			}
+			echo "files uploaded successfully";
 		}
 		
 	}
@@ -87,5 +103,26 @@ class Main extends BaseController
 
 		$model = new \App\Models\subject_model();
 		return $model->getAnswers($questionId);
+	} 
+
+	public function get_files($questionId){
+
+		$model = new \App\Models\subject_model();
+		return $model->getFiles($questionId);
+	}
+	
+	public function endorse(){
+
+		$model = new \App\Models\subject_model();
+		$answerId = $this->request->getPost('answerId');
+		$likes = $this->request->getPost('answerLikes');
+
+		if ($likes == 0) {
+			$model->endorseAnswer($answerId);
+		} else {
+			$model->unEndorseAnswer($answerId);
+		}
+		return redirect()->to(base_url().'login');
+
 	} 
 }
