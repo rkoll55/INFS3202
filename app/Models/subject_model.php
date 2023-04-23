@@ -107,5 +107,13 @@ class subject_model extends Model
       
     }
 
+    public function getSearch($subject, $query){
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT id, user_id, title, description FROM questions 
+        WHERE subjectID = $subject AND (title LIKE '%".$query."%' OR description LIKE '%".$query."%') ORDER BY time DESC");
+        $questions = $query->getResult();
+        return $questions;
+    }
+
 }
 ?>

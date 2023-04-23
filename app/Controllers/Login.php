@@ -14,6 +14,8 @@ class Login extends BaseController
                 $session->set('username',get_cookie('username'));
                 $session->set('password',get_cookie('password'));
                 $session->set('staff',get_cookie('staff'));
+                $session->set('subject',get_cookie('subject'));
+
                 if ($session->has('subject')){
                     return redirect()->to(base_url('main/'.$session->get('subject')));
                 } else {

@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+
 class Main extends BaseController
 {
 	
@@ -14,17 +15,20 @@ class Main extends BaseController
 		return redirect()->to(base_url());
 	}
 
-	setcookie('subject', $subject, time() + 3600, "/");
+	setcookie('subject', $subject, time() + 7200, "/");
 	$session->set('subject',$subject);
 	
 	$data['questions'] = $this->display_questions($subject);
 	$data['subject'] = $subject;
 	$data['staff'] = $session->get('staff'); 
 
-	echo view('template/header');
+	$header['search'] = true;
+
+	echo view('template/header', $header);
 	echo view('/board_page', $data);
 	echo view('template/footer');
- }
+ 	}
+
 
  	public function display_questions($subjectId){
 	
@@ -123,6 +127,32 @@ class Main extends BaseController
 			$model->unEndorseAnswer($answerId);
 		}
 		return redirect()->to(base_url().'login');
+
+	} 
+
+	public function search(){
+
+		$session = session();
+		if (!$session->has('subject')){
+			return redirect()->to(base_url());
+		}
+
+		$subject = $session->get('subject');
+		$query = $this->request->getPost('query');
+
+		$header['search'] = true;
+
+		$data['subject'] = $subject;
+		$data['staff'] = $session->get('staff');
+		
+		$model = new \App\Models\subject_model();
+		$data['questions'] = $model->getSearch($subject, $query);
+		$data['back'] = true;
+
+		echo view('template/header', $header);
+		echo view('/board_page', $data);
+		echo view('template/footer');
+		
 
 	} 
 }

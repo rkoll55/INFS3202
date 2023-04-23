@@ -26,41 +26,46 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-    </script>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="col-md-3">
         <a class="navbar-brand" href="#">Learniply Board</a>
-        <div class="container text-center>
+    </div>
 
+    <div class="col-md-7">
         
+            <?php
+            if(isset($search)){ 
+            ?>
+			<?php echo form_open(base_url().'main/search'); ?>
+            <div class="row">
+            
+                <div class="col-md-10">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="width: 100%;" name = "query">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </div>
+            </div>
+            <?php echo form_close(); ?>
+            <?php
+                }
+            ?>
+
+    </div>
         
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        </div>
+    <div class="col-md-2">
 
-   <!--     
-        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a href="<?php //echo base_url(); ?>main"> Home </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav my-lg-0">
-
-        </div>
-    
-        -->
-        <?php if (session()->get('username')) { ?>
-            <a class="mx-4" href="<?php echo base_url(); ?>login/logout"> Logout </a>
-        <?php } else { ?>
-            <a class="mx-4" href="<?php echo base_url(); ?>login"> Login </a>
-        <?php } ?>
-        </div>
-    </nav>
-    
+        <ul class="nav">    
+            <li class="nav-item ml-auto">   
+            <?php if (session()->get('username')) { ?>
+                <a class="mx-4" href="<?php echo base_url(); ?>login/logout"> Logout </a>
+            <?php } else { ?>
+                <a class="mx-4" href="<?php echo base_url(); ?>login"> Login </a>
+            <?php } ?>
+            </li>
+        </u1>
+    </div>
+</div>
+</nav>

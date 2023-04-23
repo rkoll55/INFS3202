@@ -17,6 +17,8 @@ class Home extends BaseController
         $data['subjects'] = $subjects;
         $data['questions'] = $questions;
 
+        $session->remove('subject');
+        setcookie('subject', '', time() - 3600, '/');
 
         $data['error']= "";
         echo view('template/header');

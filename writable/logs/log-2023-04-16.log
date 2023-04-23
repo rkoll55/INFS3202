@@ -1,0 +1,37 @@
+CRITICAL - 2023-04-16 00:39:09 --> Received unknown parameter: card[name]
+in APPPATH/Libraries/stripe-php/lib/Exception/ApiErrorException.php on line 38.
+ 1 APPPATH/Libraries/stripe-php/lib/Exception/InvalidRequestException.php(35): Stripe\Exception\ApiErrorException::factory()
+ 2 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(213): Stripe\Exception\InvalidRequestException::factory()
+ 3 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(175): Stripe\ApiRequestor::_specificAPIError()
+ 4 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(558): Stripe\ApiRequestor->handleErrorResponse()
+ 5 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(124): Stripe\ApiRequestor->_interpretResponse()
+ 6 APPPATH/Libraries/stripe-php/lib/ApiOperations/Request.php(78): Stripe\ApiRequestor->request()
+ 7 APPPATH/Libraries/stripe-php/lib/ApiOperations/Create.php(25): Stripe\ApiResource::_staticRequest()
+ 8 APPPATH/Controllers/Donate.php(39): Stripe\PaymentMethod::create()
+ 9 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Donate->check_donation()
+10 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-16 00:43:05 --> The card number is not a valid credit card number.
+in APPPATH/Libraries/stripe-php/lib/Exception/ApiErrorException.php on line 38.
+ 1 APPPATH/Libraries/stripe-php/lib/Exception/CardException.php(38): Stripe\Exception\ApiErrorException::factory()
+ 2 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(219): Stripe\Exception\CardException::factory()
+ 3 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(175): Stripe\ApiRequestor::_specificAPIError()
+ 4 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(558): Stripe\ApiRequestor->handleErrorResponse()
+ 5 APPPATH/Libraries/stripe-php/lib/ApiRequestor.php(124): Stripe\ApiRequestor->_interpretResponse()
+ 6 APPPATH/Libraries/stripe-php/lib/ApiOperations/Request.php(78): Stripe\ApiRequestor->request()
+ 7 APPPATH/Libraries/stripe-php/lib/ApiOperations/Create.php(25): Stripe\ApiResource::_staticRequest()
+ 8 APPPATH/Controllers/Donate.php(39): Stripe\PaymentMethod::create()
+ 9 SYSTEMPATH/CodeIgniter.php(934): App\Controllers\Donate->check_donation()
+10 SYSTEMPATH/CodeIgniter.php(499): CodeIgniter\CodeIgniter->runController()
+11 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+12 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-16 02:24:53 --> syntax error, unexpected token ";", expecting "]"
+in APPPATH/Controllers/Donate.php on line 56.
+ 1 SYSTEMPATH/Autoloader/Autoloader.php(289): CodeIgniter\Autoloader\Autoloader->includeFile()
+ 2 SYSTEMPATH/Autoloader/Autoloader.php(267): CodeIgniter\Autoloader\Autoloader->loadInNamespace()
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass()
+ 4 SYSTEMPATH/CodeIgniter.php(892): class_exists()
+ 5 SYSTEMPATH/CodeIgniter.php(486): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH/CodeIgniter.php(368): CodeIgniter\CodeIgniter->handleRequest()
+ 7 FCPATH/index.php(67): CodeIgniter\CodeIgniter->run()

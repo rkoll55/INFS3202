@@ -63,7 +63,7 @@ class Signup extends BaseController
             'LastName' => [],
 
             'email' => [
-                'rules' => 'valid_email',
+                'rules' => 'valid_email|is_unique[users.email]',
                 'errors' => ['valid_email' => 'Must use valid email address'
                 ]
             ],

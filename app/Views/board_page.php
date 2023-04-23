@@ -9,7 +9,6 @@
     <div class ="container-fluid">
         <div class ="row">
             <div class="col-md-2">
-                <!-- This is the new column added to the left -->
                 <h5 class="mt-4">Manage</h5>
                 <hr>
                 <hr style="border-right: 1px solid #dee2e6; position: absolute; top: 0; bottom: 0; right: 0; height: 100%;">
@@ -17,6 +16,13 @@
                 <a type="button"  class="btn btn-light btn-block text-left" href="<?php 
                     echo base_url() ?>">Home</a>
 
+                <?php if(isset($back)){ ?>
+                <a type="button"  class="btn btn-light btn-block text-left" href="<?php 
+                    echo base_url('/login') ?>">Back</a>
+                <?php } ?>
+                </br>
+                <a type="button"  class="btn btn-light btn-block text-left" href="<?php 
+                    echo base_url('/donate') ?>">Donate To Us</a>
             </div>
             
             <div class="col-md-10">
@@ -138,47 +144,48 @@
                                     <div class="form-group">
 						                <textarea class="form-control" style = "height: 150px;" placeholder="Describe the problem here" required="required" name="description"></textarea>
 					                </div>
-                                    <div class="form-group" style="display: flex; align-items: center;">
-                                        <input type="file" name="userfiles[]" multiple>
+                                    <div id="fileUpload" class="form-group" style="display: flex; align-items: center; border: 2px dashed #ccc; padding: 20px; cursor: pointer;" ondrop="dropHandler(event);"
+  ondragover="dragOverHandler(event);">
+                                        <p style="text-align: center"> Drag and Drop </p>
                                     </div>
                                     <div class="form-group" style="text-align: left">
                                         <p> Files must not exceed 1Mb in size</p>
                                     </div>
-                                    <div class="form-group" style="text-align: left">
-                                        <p> Drag and Drop!</p>
-                                    </div>
+                
                                     <button type="submit" id="submitButton" class="btn btn-success btn-block text-center">Submit</button>
                                 <?php echo form_close(); ?>
                                 
                             </div>
-
                         </div>
                     </div>
                 </div> 
             </div>
         </div>
     </div>
+
     <script>
+
         var postButton = document.getElementById('postButton');
         var postPopup = document.getElementById('postPopup');
         var closePopup = document.getElementById('closePopButton');
         var submitPopup = document.getElementById('submitButton');
+        let fileUpload = document.getElementById('fileUpload');
+        var FilesData = new FormData();
 
         document.addEventListener('DOMContentLoaded', () => {
-    const activeTabId = localStorage.getItem('activeTab');
-    if (activeTabId) {
-        const activeTab = document.querySelector(`[id^="v-pills-${activeTabId}"]`);
-        if (activeTab) {
-            activeTab.click();
-        }
-    }
-});
-
+            const activeTabId = localStorage.getItem('activeTab');
+            if (activeTabId) {
+                const activeTab = document.querySelector(`[id^="v-pills-${activeTabId}"]`);
+                if (activeTab) {
+                    activeTab.click();
+                }
+            }
+        });
 
         postButton.addEventListener('click', function(){
             postPopup.style.display = 'block';
-
         });
+
 
         submitPopup.addEventListener('click', function(event){
 
@@ -186,6 +193,17 @@
             var form = document.getElementById('submitPost');
             var formData = new FormData(form);
             formData.append('subject',<?php echo $subject?>);
+
+            console.log("here");
+
+            if (typeof FilesData !== 'undefined') {
+                console.log("there");
+
+             for (const [name, value] of FilesData.entries()) {
+                formData.append('userfiles[]', value);
+                console.log("done");
+                }
+            } 
 
             var request = new XMLHttpRequest();
 
@@ -204,26 +222,28 @@
             if(isset($questions)){
                 foreach ($questions as $pill){
         ?>
-            document.getElementById('v-pills-<?php echo $pill->id; ?>').addEventListener('click', function(event){
-                localStorage.setItem('activeTab', <?php echo $pill->id; ?>);
-            });
 
-            document.getElementById('answerButton_<?php echo $pill->id ?>').addEventListener('click', function(event){
+        document.getElementById('v-pills-<?php echo $pill->id; ?>').addEventListener('click', function(event){
+            localStorage.setItem('activeTab', <?php echo $pill->id; ?>);
+        });
 
-                event.preventDefault();
-                
-                var form = document.getElementById('submitAnswer_<?php echo $pill->id ?>');
-                var formData = new FormData(form);
+        document.getElementById('answerButton_<?php echo $pill->id ?>').addEventListener('click', function(event){
 
-                var request = new XMLHttpRequest();
+            event.preventDefault();
+            
+            var form = document.getElementById('submitAnswer_<?php echo $pill->id ?>');
+            var formData = new FormData(form);
 
-                request.open('POST', '<?php echo base_url('main/answer_question'); ?>/ajax',true)
-                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');           
-                request.send(formData);
+            var request = new XMLHttpRequest();
 
-                document.getElementById('submitAnswer_<?php echo $pill->id ?>').reset();
+            request.open('POST', '<?php echo base_url('main/answer_question'); ?>/ajax',true)
+            request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');           
+            request.send(formData);
 
-            });
+            document.getElementById('submitAnswer_<?php echo $pill->id ?>').reset();
+
+        });
+
         <?php
                 }
             }
@@ -232,5 +252,26 @@
         closePopup.addEventListener('click', function(){
             postPopup.style.display = 'none';
         });
+
+
+        function dropHandler(ev) {
+
+            console.log("File(s) dropped");
+            ev.preventDefault();
+            const files = ev.dataTransfer.items ? [...ev.dataTransfer.items].map(item => item.getAsFile()) : [...ev.dataTransfer.files];
+            
+            files.forEach((file, i) => {
+                FilesData.append(`file_${i}`, file);
+                console.log("uploaded");
+            });
+            fileUpload.style.borderColor = "green";
+        }
+
+        function dragOverHandler(ev) {
+            console.log("File(s) in drop zone");
+            ev.preventDefault();
+        }
+
+
     </script>
 </body>
