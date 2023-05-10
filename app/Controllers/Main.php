@@ -130,6 +130,17 @@ class Main extends BaseController
 
 	} 
 
+	public function boost(){
+		$question = $this->request->getPost('question');
+
+		$session = session();
+		$subject = $session->get('subject');
+		$user = $session->get('username');
+
+		$model = new \App\Models\User_model();
+		$model->boost($subject, $user, $question);
+	} 
+
 	public function search(){
 
 		$session = session();
@@ -151,8 +162,83 @@ class Main extends BaseController
 
 		echo view('template/header', $header);
 		echo view('/board_page', $data);
-		echo view('template/footer');
-		
+		echo view('template/footer');	
+	} 
 
+	public function download(){
+		echo view('/download');
+	} 
+
+	public function get_stats(){
+		$model = new \App\Models\subject_model();
+
+		$session = session();
+
+		if (!$session->has('username')){
+			return redirect()->to(base_url());
+		}
+		if (!$session->has('subject')){
+			return redirect()->to(base_url());
+		}
+
+		$session = session();
+		$subject = $session->get('subject');
+
+		$stats = $model->getStats($subject);
+
+		$data['traffic'] = count($stats);
+
+		if (!empty($stats)) {
+
+	
+			$file = fopen("stat.csv", 'w');
+
+			fputcsv($file, array_keys((array)$stats[0]));
+			foreach ($stats as $stat) {
+				fputcsv($file, (array)$stat);
+			}
+
+			fclose($file);
+			$data['link'] = $file;	
+
+			$userIdCounts = array_count_values(array_column($stats, 'username'));
+			$questionIdCounts = array_count_values(array_column($stats, 'question_id'));
+
+			$data['num_users'] = count($userIdCounts);
+			$data['num_questions'] = count($questionIdCounts);
+
+			if (!empty($userIdCounts)) {
+				$data['most_active_user'] = array_search(max($userIdCounts), $userIdCounts);
+			} 
+			if (!empty($questionIdCounts)) {
+				$data['most_active_question'] = $model->getQuestionName(array_search(max($questionIdCounts), $questionIdCounts))->title;
+			} 
+
+			$weekAgo = strtotime('-7 days'); 
+			$dayAgo = strtotime('-1 days'); 
+
+			$count1 = 0;
+			$count2 = 0;
+			foreach ($stats as $stat) {
+				$timestamp = strtotime($stat->timestamp);
+
+				if ($timestamp >= $weekAgo) {
+					$count1++;
+				}
+				if ($timestamp >= $dayAgo) {
+					$count2++;
+				}
+			}
+			$data['last_seven_days'] = $count1; 
+			$data['last_day'] = $count2; 
+			
+		} else {
+			$data['none'] = true;
+		}
+
+
+		echo view('/template/header');
+		echo view('/stats', $data);
+		echo view('/template/footer');
 	} 
 }

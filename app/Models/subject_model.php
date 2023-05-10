@@ -16,7 +16,7 @@ class subject_model extends Model
     public function getQuestions($subject){
         $db = \Config\Database::connect();
         $query = $db->query('SELECT id, user_id, title, description FROM questions 
-        WHERE subjectID = '.$subject.' ORDER BY time DESC');
+        WHERE subjectID = '.$subject.' ORDER BY likes DESC, time DESC');
         $questions = $query->getResult();
         return $questions;
     }
@@ -115,5 +115,29 @@ class subject_model extends Model
         return $questions;
     }
 
+    public function getStats($subject){
+        
+        $db = \Config\Database::connect();
+        
+        $query = $db->query("SELECT likes.*, users.username FROM likes
+        JOIN users ON likes.user_id = users.id
+        WHERE likes.subject_id = '$subject'");
+        
+        $data = $query->getResult();
+
+        return $data;
+    }
+
+    public function getQuestionName($id){
+        
+        $db = \Config\Database::connect();
+        
+        $query = $db->query("SELECT title FROM questions
+        WHERE id = '$id'");
+        
+        $questions = $query->getrow();
+
+        return $questions;
+    }
 }
 ?>

@@ -23,6 +23,12 @@
                 </br>
                 <a type="button"  class="btn btn-light btn-block text-left" href="<?php 
                     echo base_url('/donate') ?>">Donate To Us</a>
+                <?php if(isset($staff)) { 
+                    if ($staff == 1){ ?>
+                <a type="button"  class="btn btn-light btn-block text-left" href="<?php 
+                    echo base_url('/stats') ?>">Page Statistics</a>
+                    <?php } 
+                    } ?>
             </div>
             
             <div class="col-md-10">
@@ -55,7 +61,17 @@
                                             <div class="tab-pane fade" id="v-tabs-<?php echo $pill->id; ?>" role="tab" aria-labelledby="<?php echo($pill->id); ?>-tab">
                                                 <div style="text-align:left;">
                                                     <div class = "answer-container" style="margin-top: 30px; padding-bottom: 20px">
-                                                        <h4 class="mt-4"><?php echo($pill->title); ?></h4>
+                                                    <div class = row style= "padding-left: 50px">
+                                                        <div class = col-md-9>
+
+                                                            <h4 class="mt-4"><?php echo($pill->title); ?></h4>
+                                                        </div>
+                                                    <!--
+                                                        <button type="submit" class="btn btn-success text-center" style="width: 150px; margin-top: 20px; margin-right: 20px;" href="<?php 
+                                                    //echo base_url('/donate') ?>">Boost</button>
+-->
+                                                        
+                                                     </div>
                                                             </br>
                                                         <div style="margin-left: 40px; margin-right: 40px;">
                                                             <?php echo($pill->description); ?>
@@ -225,6 +241,16 @@
 
         document.getElementById('v-pills-<?php echo $pill->id; ?>').addEventListener('click', function(event){
             localStorage.setItem('activeTab', <?php echo $pill->id; ?>);
+
+            var formData = new FormData();
+            formData.append('question', '<?php echo $pill->id; ?>');
+
+
+            var request = new XMLHttpRequest();
+
+            request.open('POST', '<?php echo base_url('main/boost'); ?>/ajax',true)
+            request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');           
+            request.send(formData);
         });
 
         document.getElementById('answerButton_<?php echo $pill->id ?>').addEventListener('click', function(event){

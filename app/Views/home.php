@@ -37,3 +37,11 @@
         </div>
     <?php }; ?>
 </div>
+<div class="row">
+<div class="col-md-10">
+
+<a type="button" class="btn btn-success text-left" style="border-left: 50px; position: relative; left: 60px;" href="<?php echo base_url('/update_profile') ?>">Add Course</a>
+    </div>
+<a type="button" class="btn btn-success text-left" style="border-left: 50px; position: relative; left: 60px;" href="<?php echo base_url('/update_profile') ?>">Profile Settings</a>
+
+</div>

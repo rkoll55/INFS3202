@@ -14,9 +14,6 @@ class User_model extends Model
         $query = $builder->get();
         $user = $query->getRow();
         if ($user) {
-            echo $password;
-            echo '</br>';
-            echo $user->password;
             if (password_verify($password, $user->password)) {
                 return true;
             }
@@ -60,5 +57,31 @@ class User_model extends Model
         } else {
             return 1;
         }
+    }
+    public function updateCredentials($field, $username, $new)
+    {
+        $db = \Config\Database::connect();
+
+        $query = $db->query("UPDATE users
+        SET $field = '$new'
+        WHERE username = '$username'");
+    }
+
+    public function boost($subject, $user, $question) 
+    {
+        $id = $this->getUserId($user);
+
+        $data['user_id'] = $id;
+        $data['subject_id'] = $subject;
+        $data['question_id'] = $question;
+        $data['timestamp'] = date('Y-m-d H:i:s', strtotime('now'));
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('likes');
+        $builder->insert($data);
+
+        $db->query("UPDATE questions
+        SET likes = likes + 1
+        WHERE id = '$question'");
     }
 }
