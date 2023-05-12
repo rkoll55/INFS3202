@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Exception;
 
 class subject_model extends Model
 {
@@ -138,6 +139,65 @@ class subject_model extends Model
         $questions = $query->getrow();
 
         return $questions;
+    }
+    public function getBookmarks($id){
+        
+        $db = \Config\Database::connect();
+        
+        $query = $db->query("SELECT questionId, title, description
+        FROM questions
+        JOIN bookmarks ON questions.id = bookmarks.questionId
+        WHERE bookmarks.userId = '$id'");
+        
+        $questions = $query->getResult();
+
+        return $questions;
+    }
+
+    public function addSubject($name, $description)
+    {
+        
+        $db = \Config\Database::connect();
+        $builder = $db->table('subjects');
+
+        $data = array(
+            'id' => rand(1000, 999999999),
+            'name' => $name,
+            'description' => $description
+        );
+
+        $builder->insert($data);
+        
+    }
+
+    public function bookmarkQuestion($id, $user, $num)
+    {
+        
+        $db = \Config\Database::connect();
+
+        if($num == 1) {
+            $builder = $db->table('bookmarks');
+
+            $builder->where('questionId', $id);
+            $builder->where('userId', $user);
+            $count = $builder->countAllResults();
+
+            if ($count == 0) {
+                $data = array(
+                    'questionId' => $id,
+                    'userId' => $user,
+                );
+
+                $builder->insert($data);
+            }
+        } else {
+            $builder = $this->db->table('bookmarks');
+
+            $builder->where('questionId', $id);
+            $builder->where('userId', $user);
+
+            $builder->delete();
+        }
     }
 }
 ?>

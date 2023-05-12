@@ -97,7 +97,7 @@
                 <div class="card">
                     <div style="border: 1px solid #dee2e6;">
                     <div class="card-header">
-                        <h6>Number of Interactions in Last Day</h6>
+                        <h6>Number of Interactions in Last Week</h6>
                     </div>
                     <div class="card-block">
                         <p style="text-align:center;"><?php echo $last_seven_days ?> Clicks</p>
@@ -112,7 +112,7 @@
                 <div class="card">
                     <div style="border: 1px solid #dee2e6;">
                     <div class="card-header">
-                        <h6>Number of Interactions in Last Week</h6>
+                        <h6>Number of Interactions in Last Day</h6>
                     </div>
                     <div class="card-block">
                         <p style="text-align:center;"><?php echo $last_day ?> Clicks</p>

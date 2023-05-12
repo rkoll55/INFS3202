@@ -44,6 +44,30 @@ class User_model extends Model
 
     }
 
+    public function getVerified($username)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT verified
+            FROM users
+            WHERE username = '".$username."'");
+
+        $user = $query->getRow();
+        return $user->verified;
+
+    }
+
+    public function getEmail($username)
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query("SELECT email
+            FROM users
+            WHERE username = '".$username."'");
+
+        $user = $query->getRow();
+        return $user->email;
+
+    }
+
     public function checkStaff($username)
     {
         $db = \Config\Database::connect();

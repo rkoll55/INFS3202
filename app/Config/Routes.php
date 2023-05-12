@@ -30,22 +30,28 @@ $routes->get('/hello', 'Hello::index');
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 $routes->get('/', 'Home::index');
 $routes->get('/update_profile', 'Home::updateProfile');
-
+$routes->get('/verify_email', 'Home::verifyEmail');
+$routes->get('/verify/(:any)', 'Home::checkEmail/$1');
 $routes->post('/update_username', 'Home::updateUsername');
 $routes->post('/update_password', 'Home::updatePassword');
 $routes->post('/update_email', 'Home::updateEmail');
-
 $routes->get('/stats', 'Main::get_stats');
 $routes->get('/download', 'Main::download');
+$routes->post('/main/bookmark', 'Main::bookmark');
+
+$routes->get('/unbookmark/(:num)', 'Home::unbookmark/$1');
 
 
 $routes->post('/main/endorse', 'Main::endorse');
 $routes->get('/main/answer_question/ajax', 'Main::answer_question');
-
 $routes->post('/main/boost/ajax', 'Main::boost');
-
+$routes->post('/new_subject', 'Home::newSubject');
+$routes->get('/forgot', 'Login::forgot_password');
+$routes->post('login/change_pass', 'Login::change_password');
+$routes->post('login/confirm_pass', 'Login::confirm_pass');
 $routes->match(['get','post'],'/main/(answer_question/ajax)', 'Main::answer_question');
 $routes->get('/(.*)/ajax', 'Main::submit_form');
 $routes->match(['get','post'],'/(.*/ajax)', 'Main::submit_form');

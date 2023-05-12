@@ -21,8 +21,42 @@ class Main extends BaseController
 	$data['questions'] = $this->display_questions($subject);
 	$data['subject'] = $subject;
 	$data['staff'] = $session->get('staff'); 
+	
+	$header['search'] = true;
+
+	echo view('template/header', $header);
+	echo view('/board_page', $data);
+	echo view('template/footer');
+ 	}
+
+	 public function bookmark()
+ 	{
+
+	$session = session();
+	if (!$session->has('username')){
+		return redirect()->to(base_url());
+	}
+	if (!$session->has('subject')){
+		return redirect()->to(base_url());
+	}
+
+	$subject = $session->get('subject');
+	
+	$id = $this->request->getVar('question_id');
+	
+	$userModel = new \App\Models\User_model();
+	$userId = $userModel->getUserId($session->get('username'));
+	$model = new \App\Models\subject_model();
+
+	$model->bookmarkQuestion($id, $userId, 1);
+
+	$data['questions'] = $this->display_questions($subject);
+	$data['subject'] = $subject;
+	$data['staff'] = $session->get('staff'); 
 
 	$header['search'] = true;
+
+	
 
 	echo view('template/header', $header);
 	echo view('/board_page', $data);

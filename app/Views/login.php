@@ -16,7 +16,7 @@
 					</div>
 					<div class="clearfix">
 						<label class="float-left form-check-label"><input type="checkbox" name = 'remember'> Remember me</label>
-						<a href="#" class="float-right">Forgot Password?</a>
+						<a href="<?php echo base_url('/forgot') ?>" class="float-right">Forgot Password?</a>
 					</div>    
 					<div class="clearfix">
 						<a href="<?php echo base_url().'/signup';?>" class="float-right">No Account? Sign Up!</a>

@@ -66,10 +66,10 @@
 
                                                             <h4 class="mt-4"><?php echo($pill->title); ?></h4>
                                                         </div>
-                                                    <!--
-                                                        <button type="submit" class="btn btn-success text-center" style="width: 150px; margin-top: 20px; margin-right: 20px;" href="<?php 
-                                                    //echo base_url('/donate') ?>">Boost</button>
--->
+                                                        <?php echo form_open(base_url().'main/bookmark'); ?>
+                                                        <input type="hidden" name="question_id" value="<?php echo $pill->id ?>">
+                                                        <button type="submit" class="btn btn-light text-center" style="width: 150px; margin-top: 20px; margin-right: 20px;">Bookmark</button>
+                                                         <?php echo form_close()?>
                                                         
                                                      </div>
                                                             </br>
@@ -161,7 +161,7 @@
 						                <textarea class="form-control" style = "height: 150px;" placeholder="Describe the problem here" required="required" name="description"></textarea>
 					                </div>
                                     <div id="fileUpload" class="form-group" style="display: flex; align-items: center; border: 2px dashed #ccc; padding: 20px; cursor: pointer;" ondrop="dropHandler(event);"
-  ondragover="dragOverHandler(event);">
+                                        ondragover="dragOverHandler(event);">
                                         <p style="text-align: center"> Drag and Drop </p>
                                     </div>
                                     <div class="form-group" style="text-align: left">

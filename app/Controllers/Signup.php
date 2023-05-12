@@ -91,6 +91,34 @@ class Signup extends BaseController
             $check = $model->signUp($info);
 
             if ($check) {
+
+                $model = new \App\Models\User_model();
+                $email = $model->getEmail($username);
+                
+
+                $verificationToken = mt_rand(100000, 9999999);
+                
+            
+                $emailSender = new \CodeIgniter\Email\Email();
+                $emailConf = [
+                    'protocol' => 'smtp',
+                    'SMTPHost' => 'mailhub.eait.uq.edu.au',
+                    'SMTPPort' => 25
+                ];
+                $emailSender->initialize($emailConf);
+            
+                $emailSender->setTo($email);
+                $emailSender->setFrom('r.kollambalath@uqconnect.edu.au', 'Rohan');
+                $emailSender->setSubject("Account Verification");
+                
+                $verificationLink = base_url('verify/' . $verificationToken);
+            
+                $emailSender->setMessage("Click the link below to verify your account: " . $verificationLink);
+            
+                $emailSender->send();
+                $session =session();
+                $session->set('verify-token', $verificationToken);
+
                 return redirect()->to(base_url('login'));
 
             }else {
